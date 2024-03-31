@@ -1,6 +1,7 @@
 package com.submission.fundamental.data.retrofit
 
 import com.submission.fundamental.data.response.DetailUserResponse
+import com.submission.fundamental.data.response.FavRespons
 import com.submission.fundamental.data.response.GithubResponse
 import com.submission.fundamental.data.response.ItemsItem
 import retrofit2.Call

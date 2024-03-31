@@ -1,4 +1,4 @@
-package com.submission.fundamental.ui
+package com.submission.fundamental.ui.main
 
 import android.util.Log
 import androidx.lifecycle.LiveData
@@ -8,42 +8,47 @@ import com.submission.fundamental.data.response.GithubResponse
 import com.submission.fundamental.data.retrofit.ApiConfig
 import com.submission.fundamental.data.response.ItemsItem
 import retrofit2.Call
+import retrofit2.Callback
 import retrofit2.Response
 
 class MainViewModel : ViewModel() {
-    private val _listUser = MutableLiveData<List<ItemsItem>>()
-    val listUser: LiveData<List<ItemsItem>> = _listUser
+
+    private val _listGithubUser = MutableLiveData<List<ItemsItem?>?>()
+    val listGithubUser: LiveData<List<ItemsItem?>?> = _listGithubUser
 
     private val _isLoading = MutableLiveData<Boolean>()
     val isLoading: LiveData<Boolean> = _isLoading
 
-    companion object {
+    companion object{
         private const val TAG = "MainViewModel"
+        private const val DEFAULT_USERNAME = "Syakira"
     }
 
     init {
-        searchUsers()
+        findGithubUser(DEFAULT_USERNAME)
     }
 
-    fun searchUsers(q: String = "Syakira") {
+    fun findGithubUser(username: String) {
         _isLoading.value = true
-        val client = ApiConfig.getApiService().searchUsers(q)
-        client.enqueue(object : retrofit2.Callback<GithubResponse> {
+        val client = ApiConfig.getApiService().searchUsers(username)
+        client.enqueue(object : Callback<GithubResponse> {
             override fun onResponse(
                 call: Call<GithubResponse>,
                 response: Response<GithubResponse>
             ) {
                 _isLoading.value = false
                 if (response.isSuccessful) {
-                    _listUser.value = response.body()?.items as List<ItemsItem>?
+                    val responseBody = response.body()
+                    if (responseBody != null) {
+                        _listGithubUser.value = response.body()?.items
+                    }
                 } else {
-                    Log.d(TAG, "OnFailure : ${response.message()}")
+                    Log.e(TAG, "onFailure: ${response.message()}")
                 }
             }
-
             override fun onFailure(call: Call<GithubResponse>, t: Throwable) {
                 _isLoading.value = false
-                Log.d(TAG, "OnFailure : ${t.message}")
+                Log.e(TAG, "onFailure: ${t.message}")
             }
         })
     }
