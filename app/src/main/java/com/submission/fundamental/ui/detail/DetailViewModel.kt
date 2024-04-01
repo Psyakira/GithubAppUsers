@@ -6,7 +6,6 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.submission.fundamental.data.response.DetailUserResponse
-import com.submission.fundamental.data.response.ItemsItem
 import com.submission.fundamental.data.retrofit.ApiConfig
 import com.submission.fundamental.database.FavoriteUser
 import com.submission.fundamental.repository.FavoriteUserRepository

@@ -1,12 +1,13 @@
 package com.submission.fundamental.ui.settings
 
 import androidx.datastore.core.DataStore
+import androidx.datastore.preferences.core.Preferences
 import androidx.datastore.preferences.core.booleanPreferencesKey
 import androidx.datastore.preferences.core.edit
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
 
-class SettingPreferences private constructor(private val dataStore: DataStore<androidx.datastore.preferences.core.Preferences>) {
+class SettingPreferences private constructor(private val dataStore: DataStore<Preferences>) {
 
     private val THEME_KEY = booleanPreferencesKey("theme_setting")
 
@@ -26,7 +27,7 @@ class SettingPreferences private constructor(private val dataStore: DataStore<an
         @Volatile
         private var INSTANCE: SettingPreferences? = null
 
-        fun getInstance(dataStore: DataStore<androidx.datastore.preferences.core.Preferences>): SettingPreferences {
+        fun getInstance(dataStore: DataStore<Preferences>): SettingPreferences {
             return INSTANCE ?: synchronized(this) {
                 val instance = SettingPreferences(dataStore)
                 INSTANCE = instance
@@ -34,4 +35,5 @@ class SettingPreferences private constructor(private val dataStore: DataStore<an
             }
         }
     }
+
 }
